@@ -1,0 +1,63 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.input_wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 14px;
+  color: grey;
+  padding-left: 6px;
+}
+
+.input {
+  padding: 4px 8px;
+  outline: none;
+}
+
+.submit_btn {
+  cursor: pointer;
+  padding: 4px 8px;
+  outline: none;
+}
+
+.switch_login_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.switch_login_text {
+  font-size: 14px;
+  color: grey;
+}
+
+.switch_btn {
+  cursor: pointer;
+  padding: 4px 8px;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid grey;
+  background: none;
+}
+
+.error_message {
+  color: red;
+  font-size: 14px;
+  font-family: Inter;
+  border-bottom: 1px solid red;
+}

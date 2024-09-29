@@ -1,0 +1,53 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.nav_left_block {
+  padding-left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.tab_text {
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.nav_right_block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user_email_text {
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(45, 45, 45);
+}
+
+.logout_btn {
+  cursor: pointer;
+  padding: 4px 8px;
+  outline: none;
+  border: 1px solid grey;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.wrapper {
+  border: 1px solid rgb(111, 111, 111);
+  border-radius: 10px;
+  margin: 20px;
+  padding: 40px;
+  width: 100%;
+}
