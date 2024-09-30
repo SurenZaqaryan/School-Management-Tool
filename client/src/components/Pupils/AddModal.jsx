@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './style.module.css';
 import Select from 'react-select';
 import { GET_SUBJECTS } from '../../graphql/queries/subjectQueries';
@@ -27,28 +27,31 @@ function AddModal({ refetch, setModalActive }) {
     }
   }, [data]);
 
-  const handleAddPupil = async (e) => {
-    e.preventDefault();
+  const handleAddPupil = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    if (!name || !grade || !subjects.length) {
-      setErrorMessage('Invalid name or grade or subjects length is 0');
-      return;
-    }
+      if (!name || !grade || !subjects.length) {
+        setErrorMessage('Invalid name or grade or subjects length is 0');
+        return;
+      }
 
-    try {
-      await addPupil({
-        variables: {
-          name,
-          grade: Number(grade),
-          subjectIds: subjects.map((subject) => subject.value),
-        },
-      });
-      setModalActive(false);
-      refetch();
-    } catch (err) {
-      console.error('Error', err);
-    }
-  };
+      try {
+        await addPupil({
+          variables: {
+            name,
+            grade: Number(grade),
+            subjectIds: subjects.map((subject) => subject.value),
+          },
+        });
+        setModalActive(false);
+        refetch();
+      } catch (err) {
+        console.error('Error', err);
+      }
+    },
+    [addPupil, grade, name, refetch, setModalActive, subjects],
+  );
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error {error.message}</p>;

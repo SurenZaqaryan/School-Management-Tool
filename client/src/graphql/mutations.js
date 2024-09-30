@@ -54,6 +54,7 @@ export const DELETE_TEACHER = gql`
   }
 `;
 
+// Pupil
 export const ADD_PUPIL = gql`
   mutation ($name: String!, $grade: Int!, $subjectIds: [ID!]!) {
     addPupil(name: $name, grade: $grade, subjectIds: $subjectIds)
@@ -77,5 +78,31 @@ export const UPDATE_PUPIL = gql`
 export const DELETE_PUPIL = gql`
   mutation DeletePupil($id: ID!) {
     deletePupil(id: $id)
+  }
+`;
+
+//Subject
+
+export const ADD_SUBJECT = gql`
+  mutation ($name: String!) {
+    addSubject(name: $name) {
+      id
+      name
+    }
+  }
+`;
+
+export const DELETE_SUBJECT = gql`
+  mutation ($id: ID!) {
+    deleteSubject(id: $id)
+  }
+`;
+
+export const UPDATE_SUBJECT = gql`
+  mutation ($id: ID!, $name: String!) {
+    updateSubject(id: $id, name: $name) {
+      id
+      name
+    }
   }
 `;

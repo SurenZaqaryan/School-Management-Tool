@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styles from '../Teachers/style.module.css';
 import { useMutation } from '@apollo/client';
 import { DELETE_TEACHER } from '../../graphql/mutations';
@@ -6,14 +6,14 @@ import { DELETE_TEACHER } from '../../graphql/mutations';
 function Teacher({ teacher, setModalActive, refetch }) {
   const [deleteTeacher] = useMutation(DELETE_TEACHER);
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     try {
       await deleteTeacher({ variables: { id: teacher.id } });
       refetch();
     } catch (error) {
       console.error('Error deleting teacher:', error);
     }
-  };
+  }, [deleteTeacher, refetch, teacher.id]);
 
   return (
     <div className={styles.teacher}>

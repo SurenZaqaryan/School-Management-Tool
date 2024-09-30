@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styles from './style.module.css';
 import { useMutation } from '@apollo/client';
 import { SIGNUP_MUTATION } from '../../graphql/mutations';
@@ -10,31 +10,37 @@ function Login() {
   const [clientError, setClientError] = useState('');
   const [signup, { error }] = useMutation(SIGNUP_MUTATION);
 
-  const handleChangeToLogin = () => {
+  const handleChangeToLogin = useCallback(() => {
     setValues({ email: '', password: '' });
     navigate('/');
-  };
+  }, [navigate]);
 
-  const handleChangeValues = (event) => {
-    const { name, value } = event.target;
-    setValues({ ...values, [name]: value });
-  };
+  const handleChangeValues = useCallback(
+    (event) => {
+      const { name, value } = event.target;
+      setValues({ ...values, [name]: value });
+    },
+    [values],
+  );
 
-  const handleSignUp = async (e) => {
-    e.preventDefault();
+  const handleSignUp = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    if (Object.values(values).some((value) => value.length === 0)) {
-      setClientError('All inputs are required');
-      return;
-    }
+      if (Object.values(values).some((value) => value.length === 0)) {
+        setClientError('All inputs are required');
+        return;
+      }
 
-    try {
-      const { data } = await signup({ variables: values });
-      data?.signup?.message === 'success' && handleChangeToLogin();
-    } catch (e) {
-      console.error(e);
-    }
-  };
+      try {
+        const { data } = await signup({ variables: values });
+        data?.signup?.message === 'success' && handleChangeToLogin();
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    [handleChangeToLogin, signup, values],
+  );
 
   return (
     <div className={styles.container}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styles from './style.module.css';
 import { useMutation } from '@apollo/client';
 import { DELETE_PUPIL } from '../../graphql/mutations';
@@ -10,7 +10,7 @@ function Pupil({ pupil, refetch }) {
   const [deletePupil] = useMutation(DELETE_PUPIL);
   const subjectsText = subjects.map((subject) => subject.name).join(', ');
 
-  const handleDeletePupil = async () => {
+  const handleDeletePupil = useCallback(async () => {
     try {
       await deletePupil({
         variables: { id },
@@ -20,7 +20,7 @@ function Pupil({ pupil, refetch }) {
     } catch (error) {
       console.error('Error deleting pupil:', error);
     }
-  };
+  }, [deletePupil, id, refetch]);
   return (
     <>
       <div className={styles.pupil_wrapper}>

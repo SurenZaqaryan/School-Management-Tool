@@ -27,7 +27,6 @@ const resolvers = {
   },
 
   Mutation: {
-    // login
     signup: async (_, { email, password }, { prisma }) => {
       const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -42,7 +41,7 @@ const resolvers = {
         message: 'success',
       };
     },
-    login: async (_, { email, password }, { prisma }) => {
+    login: async (_, { email, password }, { prisma, res, cookies }) => {
       const user = await prisma.user.findUnique({
         where: { email },
       });
@@ -57,12 +56,24 @@ const resolvers = {
         throw new Error('Invalid password');
       }
 
-      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET_KEY, {
-        expiresIn: '5h',
+      const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_ACCESS_SECRET, {
+        expiresIn: '1h',
+      });
+
+      const refreshToken = jwt.sign({ userId: user.id }, process.env.JWT_REFRESH_SECRET, {
+        expiresIn: '15d',
+      });
+      console.log(cookies);
+
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        // secure: process.env.NODE_ENV === 'production',
+        // sameSite: 'Strict', // Ограничиваем cookie для безопасности
+        maxAge: 15 * 24 * 60 * 60 * 1000, // 7 дней
       });
 
       return {
-        token,
+        token: accessToken,
         user: {
           id: user.id,
           email: user.email,
@@ -99,7 +110,6 @@ const resolvers = {
       });
       return updatedTeacher;
     },
-
     deleteTeacher: async (_, { id }, { prisma }) => {
       try {
         await prisma.teacher.delete({
@@ -113,9 +123,10 @@ const resolvers = {
         return false;
       }
     },
+
     // pupil
-    addPupil: async (parent, { name, grade, subjectIds }, context) => {
-      const pupil = await context.prisma.pupil.create({
+    addPupil: async (_, { name, grade, subjectIds }, context) => {
+      await context.prisma.pupil.create({
         data: {
           name,
           grade,
@@ -129,7 +140,7 @@ const resolvers = {
       });
       return true;
     },
-    updatePupil: async (parent, { id, name, grade, subjectIds }, { prisma }) => {
+    updatePupil: async (_, { id, name, grade, subjectIds }, { prisma }) => {
       const updatedPupil = await prisma.pupil.update({
         where: { id: String(id) },
         data: {
@@ -145,26 +156,39 @@ const resolvers = {
       });
       return updatedPupil;
     },
-    deletePupil: async (parent, { id }, context) => {
+    deletePupil: async (_, { id }, context) => {
       await context.prisma.pupil.delete({ where: { id } });
       return true;
     },
 
     // subject
-    addSubject: async (parent, { name }, context) => {
+    addSubject: async (_, { name }, context) => {
       return await context.prisma.subject.create({
         data: { name },
       });
     },
-    updateSubject: async (parent, { id, name }, context) => {
-      return await context.prisma.subject.update({
-        where: { id },
-        data: { name },
-      });
+    updateSubject: async (_, args, context) => {
+      const { id, name } = args;
+      try {
+        const updatedSubject = await context.prisma.subject.update({
+          where: { id: String(id) },
+          data: { name },
+        });
+        return updatedSubject;
+      } catch (error) {
+        throw new Error(error.message);
+      }
     },
-    deleteSubject: async (parent, { id }, context) => {
-      await context.prisma.subject.delete({ where: { id } });
-      return true;
+    deleteSubject: async (_, args, context) => {
+      const { id } = args;
+      try {
+        await context.prisma.subject.delete({
+          where: { id: String(id) },
+        });
+        return true;
+      } catch (error) {
+        throw new Error(error.message);
+      }
     },
   },
 };

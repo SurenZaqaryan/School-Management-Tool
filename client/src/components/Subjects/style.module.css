@@ -1,0 +1,198 @@
+.titles_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 120px;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+
+.pupil_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid grey;
+  padding: 4px;
+}
+
+.action_btns_wrapper {
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.action_btn {
+  cursor: pointer;
+  outline: none;
+  background-color: transparent;
+  padding: 4px 8px;
+  border: 1px solid grey;
+  border-radius: 4px;
+}
+
+.subjects_wrapper {
+  overflow: auto;
+  width: 150px;
+  text-align: center;
+}
+
+.item {
+  width: 150px;
+  text-align: center;
+}
+
+.modal_container {
+  width: 100vw;
+  height: 100vh;
+  background-color: #4444444a;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+}
+
+.modal_wrapper {
+  width: 30%;
+  border-radius: 20px;
+  background-color: white;
+  padding: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.label {
+  font-size: 14px;
+  color: rgb(54, 54, 54);
+  padding-left: 5px;
+}
+
+.input {
+  padding: 4px 8px;
+  outline: none;
+}
+
+.error_messae {
+  color: red;
+  font-size: 14px;
+  padding-left: 6px;
+}
+
+.btn_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  cursor: pointer;
+  padding: 4px 8px;
+  outline: none;
+  border: 1px solid grey;
+  border-radius: 4px;
+}
+
+.add_pupil_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.add_pupil_button {
+  background-color: rgb(64, 181, 64);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 10px 50px;
+  border-radius: 10px;
+  transition: 0.2s linear;
+  border: none;
+  margin-bottom: 10px;
+}
+
+.add_pupil_button:hover {
+  transform: scale(1.05);
+}
+
+.add_subject_button {
+  background-color: rgb(64, 181, 64);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 10px 50px;
+  border-radius: 10px;
+  transition: 0.2s linear;
+  border: none;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.add_subject_button:hover {
+  transform: scale(1.05);
+}
+
+.error_message_wrapper {
+  margin: 10px 0px;
+  padding: 5px;
+  height: 30px;
+  max-width: 400px;
+  text-align: center;
+}
+
+.error_message {
+  font-size: 14px;
+  color: red;
+}
+
+.success_message {
+  font-size: 14px;
+  color: green;
+}
+
+.add_subject_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.action_btn_save {
+  background-color: green;
+  color: white;
+  outline: none;
+  border: none;
+  transition: 0.2s linear;
+  padding: 4px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.action_btn_cancel {
+  background-color: red;
+  color: white;
+  outline: none;
+  border: none;
+  transition: 0.2s linear;
+  padding: 4px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+}

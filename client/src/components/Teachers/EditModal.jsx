@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './style.module.css';
 import Select from 'react-select';
 import { GET_TEACHER_AND_SUBJECTS } from '../../graphql/queries/teacherQueries';
@@ -30,23 +30,28 @@ function Modal({ id, setModalActive }) {
     }
   }, [data]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    if (!values.name || values.subjects.length === 0) {
-      setErrorClient('invalid teacher name or 0 subjects');
-      return;
-    }
+      if (!values.name || values.subjects.length === 0) {
+        setErrorClient('invalid teacher name or 0 subjects');
+        return;
+      }
 
-    try {
-      const subjectIds = values.subjects.map((subject) => subject.value);
+      try {
+        const subjectIds = values.subjects.map((subject) => subject.value);
 
-      await updateTeacher({ variables: { id: String(values.id), name: values.name, subjectIds } });
-      setModalActive(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+        await updateTeacher({
+          variables: { id: String(values.id), name: values.name, subjectIds },
+        });
+        setModalActive(false);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [setModalActive, updateTeacher, values],
+  );
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;

@@ -33,7 +33,6 @@ const typeDefs = gql`
   type Subject {
     id: ID!
     name: String!
-    teachers: [Teacher!]!
   }
 
   type Query {

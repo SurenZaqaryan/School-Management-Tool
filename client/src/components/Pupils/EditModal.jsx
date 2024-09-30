@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './style.module.css';
 import Select from 'react-select';
 import { GET_SUBJECTS } from '../../graphql/queries/subjectQueries';
@@ -34,28 +34,31 @@ function EditModal({ pupil, id, setModalActive }) {
     }
   }, [data]);
 
-  const handleEditPupil = async (e) => {
-    e.preventDefault();
+  const handleEditPupil = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    if (!name || !grade || !subjects.length) {
-      setErrorMessage('Invalid name or grade or subjects length is 0');
-      return;
-    }
+      if (!name || !grade || !subjects.length) {
+        setErrorMessage('Invalid name or grade or subjects length is 0');
+        return;
+      }
 
-    try {
-      await updatePupil({
-        variables: {
-          id,
-          name,
-          grade: Number(grade),
-          subjectIds: subjects.map((subject) => subject.value),
-        },
-      });
-      setModalActive(false);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+      try {
+        await updatePupil({
+          variables: {
+            id,
+            name,
+            grade: Number(grade),
+            subjectIds: subjects.map((subject) => subject.value),
+          },
+        });
+        setModalActive(false);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    },
+    [grade, id, name, setModalActive, subjects, updatePupil],
+  );
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading subjects</p>;

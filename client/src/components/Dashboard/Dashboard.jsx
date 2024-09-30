@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './style.module.css';
 import { removeUser } from '../../redux/userSlice';
@@ -11,9 +11,9 @@ function Dashboard() {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState('teachers');
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     dispatch(removeUser());
-  };
+  }, [dispatch]);
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styles from './style.module.css';
 import { useMutation } from '@apollo/client';
 import { LOGIN_MUTATION } from '../../graphql/mutations';
@@ -13,37 +13,43 @@ function Login() {
   const [clientError, setClientError] = useState('');
   const [login, { error }] = useMutation(LOGIN_MUTATION);
 
-  const handleChangeToSignup = () => {
+  const handleChangeToSignup = useCallback(() => {
     setValues({ email: '', password: '' });
     navigate('/signup');
-  };
+  }, [navigate]);
 
-  const handleChangeValues = (event) => {
-    const { name, value } = event.target;
-    setValues({ ...values, [name]: value });
-  };
+  const handleChangeValues = useCallback(
+    (event) => {
+      const { name, value } = event.target;
+      setValues({ ...values, [name]: value });
+    },
+    [values],
+  );
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    if (Object.values(values).some((value) => value.length === 0)) {
-      setClientError('All inputs are required');
-      return;
-    }
+      if (Object.values(values).some((value) => value.length === 0)) {
+        setClientError('All inputs are required');
+        return;
+      }
 
-    try {
-      const { data } = await login({ variables: values });
-      const user = {
-        id: data.login.user.id,
-        email: data.login.user.email,
-        token: data.login.token,
-      };
-      dispatch(setUser(user));
-      navigate('/dashboard');
-    } catch (e) {
-      console.log(e);
-    }
-  };
+      try {
+        const { data } = await login({ variables: values });
+        const user = {
+          id: data.login.user.id,
+          email: data.login.user.email,
+          token: data.login.token,
+        };
+        dispatch(setUser(user));
+        navigate('/dashboard');
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    [dispatch, login, navigate, values],
+  );
 
   return (
     <div className={styles.container}>

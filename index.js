@@ -5,11 +5,13 @@ import cors from 'cors';
 import typeDefs from './graphql/typeDefs.js';
 import resolvers from './graphql/resolvers.js';
 import prisma from './prisma/prisma.js';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(express.json());
+app.use(cookieParser());
 
 const server = new ApolloServer({
   typeDefs,
@@ -21,8 +23,8 @@ await server.start();
 app.use(
   '/graphql',
   expressMiddleware(server, {
-    context: () => {
-      return { prisma };
+    context: ({ req, res }) => {
+      return { prisma, res, cookies: req.cookies };
     },
   }),
 );
